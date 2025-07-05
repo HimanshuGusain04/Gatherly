@@ -1,0 +1,8 @@
+---
+description: Use Shadcn/UI for all UI components
+globs: *.tsx, *.ts
+---
+## Rules
+- You must use Shadcn UI for components.
+- You must use Tailwind CSS for styling.
+- You must install any missing Shadcn UI component with `npx shadcn@latest add <component-name>`
