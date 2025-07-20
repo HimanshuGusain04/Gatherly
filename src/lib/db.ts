@@ -9,6 +9,9 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient()
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
+// Export the Prisma client directly for new operations
+export const db = prisma
+
 // Types
 export interface Poll {
   id: string
@@ -17,6 +20,7 @@ export interface Poll {
   description?: string
   createdAt: Date
   updatedAt: Date
+  createdBy: string
   options: PollOption[]
 }
 
@@ -31,20 +35,21 @@ export interface PollOption {
 
 export interface Vote {
   id: string
-  voterId: string
+  userId: string
   optionId: string
   createdAt: Date
 }
 
 // Database operations
-export const db = {
-  // Create a new poll
-  createPoll: async (title: string, description: string, options: string[]): Promise<Poll> => {
+export const pollDb = {
+  // Create a new poll with user information
+  createPoll: async (title: string, description: string, options: string[], userId: string): Promise<Poll> => {
     const poll = await prisma.poll.create({
       data: {
         slug: nanoid(8), // 8 character slug
         title,
         description,
+        createdBy: userId,
         options: {
           create: options.map(text => ({
             text,
@@ -79,8 +84,8 @@ export const db = {
     return poll as Poll | null
   },
 
-  // Add vote to poll option
-  addVote: async (pollSlug: string, optionId: string, voterId: string): Promise<boolean> => {
+  // Add vote to poll option (updated to use userId)
+  addVote: async (pollSlug: string, optionId: string, userId: string): Promise<boolean> => {
     try {
       // First check if the poll and option exist
       const poll = await prisma.poll.findUnique({
@@ -99,7 +104,7 @@ export const db = {
       // Try to create the vote (will fail if duplicate due to unique constraint)
       await prisma.vote.create({
         data: {
-          voterId,
+          userId,
           optionId
         }
       })
@@ -113,6 +118,4 @@ export const db = {
       throw error
     }
   },
-
-
 } 

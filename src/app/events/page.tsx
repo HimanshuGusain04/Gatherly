@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext"
 import { MainLayout } from "@/components/main-layout"
 
-export default function HomePage() {
+export default function EventsPage() {
   const { loading } = useAuth()
 
   if (loading) {
@@ -17,5 +17,5 @@ export default function HomePage() {
     )
   }
 
-  return <MainLayout activePage="home" />
-}
+  return <MainLayout activePage="events" />
+} 

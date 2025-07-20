@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db'
+import { pollDb } from '@/lib/db'
 import { z } from 'zod'
 
 const voteSchema = z.object({
   pollSlug: z.string(),
   optionId: z.string(),
-  voterId: z.string()
+  userId: z.string()
 })
 
 export async function POST(
@@ -19,10 +19,10 @@ export async function POST(
       pollSlug: params.slug
     })
     
-    const success = await db.addVote(
+    const success = await pollDb.addVote(
       validatedData.pollSlug,
       validatedData.optionId,
-      validatedData.voterId
+      validatedData.userId
     )
     
     if (!success) {

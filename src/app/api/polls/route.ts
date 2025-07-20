@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db'
+import { pollDb } from '@/lib/db'
 import { z } from 'zod'
 
 const createPollSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().optional(),
-  options: z.array(z.string().min(1, 'Option text is required')).min(2, 'At least 2 options are required')
+  options: z.array(z.string().min(1, 'Option text is required')).min(2, 'At least 2 options are required'),
+  userId: z.string().min(1, 'User ID is required')
 })
 
 export async function POST(request: NextRequest) {
@@ -13,10 +14,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = createPollSchema.parse(body)
     
-    const poll = await db.createPoll(
+    const poll = await pollDb.createPoll(
       validatedData.title,
       validatedData.description || '',
-      validatedData.options
+      validatedData.options,
+      validatedData.userId
     )
     
     return NextResponse.json({ success: true, poll })

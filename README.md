@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Group Polling App
+
+A modern web application for creating and voting on time-based polls with user authentication.
+
+## Features
+
+- **User Authentication**: Secure registration and login system
+- **Poll Creation**: Create polls with custom time options using a calendar interface
+- **Voting System**: Vote on poll options with user-based tracking
+- **Modern UI**: Beautiful interface built with Shadcn/UI and Tailwind CSS
+- **Real-time Updates**: Instant feedback and notifications
+
+## Authentication
+
+The app now includes a complete authentication system:
+
+### Registration
+- Users can create accounts with email, name, and password
+- Password validation and confirmation
+- Email uniqueness validation
+
+### Login
+- Secure login with email and password
+- Session persistence using localStorage
+- Automatic redirect after successful login
+
+### User Management
+- User state management throughout the app
+- Logout functionality
+- Conditional UI based on authentication status
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Set up the database**:
+   ```bash
+   npx prisma db push
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. **Open your browser** and navigate to `http://localhost:3000`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Usage
 
-## Learn More
+1. **Create an Account**: Click "Sign Up" to register with your email, name, and password
+2. **Sign In**: Use your credentials to log in to your account
+3. **Create Polls**: Once logged in, you can create polls with time-based options
+4. **Vote**: Participate in polls created by other users
+5. **Logout**: Click the logout button to sign out
 
-To learn more about Next.js, take a look at the following resources:
+## Technology Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend**: Next.js 13, React, TypeScript
+- **UI Components**: Shadcn/UI, Tailwind CSS
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: Custom implementation with bcrypt for password hashing
+- **Forms**: React Hook Form with Zod validation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Database Schema
 
-## Deploy on Vercel
+The app uses the following main models:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **User**: Stores user authentication and profile information
+- **Poll**: Contains poll details and creator information
+- **PollOption**: Individual options for each poll
+- **Vote**: Tracks user votes on poll options
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API Endpoints
+
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/polls` - Create new polls
+- `GET /api/polls/[slug]` - Get poll details
+- `POST /api/polls/[slug]/vote` - Submit votes
+
+## Security Features
+
+- Password hashing with bcrypt
+- Input validation with Zod schemas
+- User session management
+- Protected routes and API endpoints
