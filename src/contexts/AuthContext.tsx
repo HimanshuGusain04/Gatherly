@@ -1,17 +1,19 @@
 "use client"
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, { createContext, useContext, ReactNode } from 'react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 
 interface User {
-  id: string
-  email: string
-  name: string
-  createdAt: string
+  id?: string
+  name?: string | null
+  email?: string | null
+  image?: string | null
 }
 
 interface AuthContextType {
-  user: User | null
+  user: User | undefined
   login: (email: string, password: string) => Promise<boolean>
+  loginWithGoogle: () => Promise<boolean>
   register: (email: string, name: string, password: string) => Promise<boolean>
   logout: () => void
   loading: boolean
@@ -20,44 +22,31 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    // Check for stored user data on mount
-    const storedUser = localStorage.getItem('user')
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser))
-      } catch (error) {
-        console.error('Error parsing stored user:', error)
-        localStorage.removeItem('user')
-      }
-    }
-    setLoading(false)
-  }, [])
+  const { data: session, status } = useSession()
+  const loading = status === "loading"
+  const user = session?.user
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
       })
 
-      const data = await response.json()
-
-      if (data.success) {
-        setUser(data.user)
-        localStorage.setItem('user', JSON.stringify(data.user))
-        return true
-      } else {
-        return false
-      }
+      return result?.ok || false
     } catch (error) {
       console.error('Login error:', error)
+      return false
+    }
+  }
+
+  const loginWithGoogle = async (): Promise<boolean> => {
+    try {
+      await signIn('google', { callbackUrl: '/' })
+      return true
+    } catch (error) {
+      console.error('Google login error:', error)
       return false
     }
   }
@@ -75,9 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const data = await response.json()
 
       if (data.success) {
-        setUser(data.user)
-        localStorage.setItem('user', JSON.stringify(data.user))
-        return true
+        // Auto login after successful registration
+        return await login(email, password)
       } else {
         return false
       }
@@ -87,14 +75,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const logout = () => {
-    setUser(null)
-    localStorage.removeItem('user')
+  const logout = async () => {
+    await signOut({ callbackUrl: '/' })
   }
 
   const value = {
     user,
     login,
+    loginWithGoogle,
     register,
     logout,
     loading,

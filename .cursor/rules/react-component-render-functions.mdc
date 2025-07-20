@@ -1,0 +1,6 @@
+---
+alwaysApply: true
+---
+description: Divide large render functions into multiple logical parts for better readability
+globs: ["**/*.tsx", "**/*.jsx"]
+alwaysApply: false
