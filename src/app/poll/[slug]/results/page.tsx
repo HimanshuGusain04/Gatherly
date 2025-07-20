@@ -43,9 +43,9 @@ export default function ResultsPage({ params }: { params: { slug: string } }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-cream-50 to-sage-100 py-12 px-4">
         <div className="max-w-2xl mx-auto text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading results...</p>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default function ResultsPage({ params }: { params: { slug: string } }) {
   const winningOptions = poll.options.filter(option => option.votes.length === maxVotes && maxVotes > 0)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 to-sage-100 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <Button variant="ghost" onClick={() => router.push("/")} className="mb-6">
           <ArrowLeft className="h-4 w-4 mr-2" />

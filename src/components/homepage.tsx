@@ -36,7 +36,7 @@ export function Homepage({ activePage = "home" }: HomepageProps) {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900">Your Polls</h2>
-              <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+              <Button className="bg-sage hover:bg-sage-600 text-white">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Poll
               </Button>
@@ -55,7 +55,7 @@ export function Homepage({ activePage = "home" }: HomepageProps) {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900">Your Events</h2>
-              <Button className="bg-red-600 hover:bg-red-700 text-white">
+              <Button className="bg-amber hover:bg-amber-600 text-white">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Event
               </Button>
@@ -92,7 +92,7 @@ export function Homepage({ activePage = "home" }: HomepageProps) {
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <BarChart3 className="w-6 h-6 text-purple-600" />
+                            <BarChart3 className="w-6 h-6 text-sage-600" />
                             <span className="text-sm font-medium text-gray-900">Polls</span>
                           </div>
                           <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
@@ -108,7 +108,7 @@ export function Homepage({ activePage = "home" }: HomepageProps) {
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <Calendar className="w-6 h-6 text-red-500" />
+                            <Calendar className="w-6 h-6 text-amber-600" />
                             <span className="text-sm font-medium text-gray-900">Events</span>
                           </div>
                           <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
